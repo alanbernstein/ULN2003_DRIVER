@@ -48,8 +48,8 @@ class ULN2003:
                 i-=1
                 sleep(delay)
     
-    def deinit():
+    def deinit(self):
         i=0
         while i <= 3:
-            self.pins.value(0)
+            self.pins[i].value(0)
             i+=1
