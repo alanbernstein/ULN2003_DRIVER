@@ -2,12 +2,15 @@ from machine import Pin
 from time import sleep
 
 class ULN2003:
-    def __init__(self, a, b, c, d):
+    def __init__(self, motor_pin_id_group):
         try:
-            self.A = Pin(a, Pin.OUT)
-            self.B = Pin(b, Pin.OUT)
-            self.C = Pin(c, Pin.OUT)
-            self.D = Pin(d, Pin.OUT)
+            self.motor_pin_id_group = motor_pin_id_group
+            self.motor = [
+                Pin(self.motor_pin_id_group[0], Pin.OUT),
+                Pin(self.motor_pin_id_group[1], Pin.OUT),
+                Pin(self.motor_pin_id_group[2], Pin.OUT),
+                Pin(self.motor_pin_id_group[3], Pin.OUT),
+            ]
         except ValueError:
             print("Invalid pins provided. Check the pinout of your microcontroller.")
 
@@ -23,10 +26,10 @@ class ULN2003:
                 for step in range(steps):
                     i = 0
                     for i in range(4):
-                        self.A.value(self.A_value[i*direction])
-                        self.B.value(self.B_value[i*direction])
-                        self.C.value(self.C_value[i*direction])
-                        self.D.value(self.D_value[i*direction])
+                        self.motor[0].value(self.A_value[i*direction])
+                        self.motor[1].value(self.B_value[i*direction])
+                        self.motor[2].value(self.C_value[i*direction])
+                        self.motor[3].value(self.D_value[i*direction])
                         sleep(delay)
                         i+=direction
             else:
@@ -36,8 +39,7 @@ class ULN2003:
                 print("The value of delay is smaller than 0.002. Please increase the value of delay to resolve this error.")
             if steps < 1:
                 print("The value of steps is smaller than 1. Please increase the value of steps to resolve this error.")
-            self.A.value(0)
-            self.B.value(0)
-            self.C.value(0)
-            self.D.value(0)
-
+            self.motor[0].value(0)
+            self.motor[1].value(0)
+            self.motor[2].value(0)
+            self.motor[3].value(0)
